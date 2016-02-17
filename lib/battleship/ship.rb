@@ -31,7 +31,5 @@ module Battleship
         :hit
       end
     end
-
   end
-
 end
