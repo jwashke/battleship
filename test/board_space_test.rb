@@ -1,12 +1,11 @@
 require_relative 'test_helper'
-require '..lib/battleship/board_space'
-require '..lib/battleship/ship'
+require_relative '../lib/battleship/board_space'
+require_relative '../lib/battleship/ship'
 
 class BoardSpaceTest < Minitest::Test
   def setup
     @board_space = Battleship::BoardSpace.new
-    @ship = Battleship::Ship.new
-    @mock = MiniTest::Mock.new
+    @ship = Battleship::Ship.new(2)
   end
 
   def test_it_can_have_a_ship
@@ -44,7 +43,7 @@ class BoardSpaceTest < Minitest::Test
   end
 
   def test_it_can_have_a_hit
-    @board_space.place_ship(ship)
+    @board_space.place_ship(@ship)
     @board_space.check_hit
     assert @board_space.has_hit?
   end
@@ -57,14 +56,14 @@ class BoardSpaceTest < Minitest::Test
     assert_equal :miss, @board_space.check_hit
   end
 
-  def test_check_hit_returns_hit_if_a_ship_was_hit
+  def test_check_hit_returns_hit_if_a_ship_was_hit_and_not_sunk
     @board_space.place_ship(@ship)
     assert_equal :hit, @board_space.check_hit
   end
 
   def test_check_hit_returns_sunk_if_a_ship_was_sunk
-    @mock.expect(sunk?, true)
-    @board_space.place_ship(@mock)
+    @board_space.place_ship(@ship)
+    assert_equal :hit, @board_space.check_hit
     assert_equal :sunk, @board_space.check_hit
   end
 end
