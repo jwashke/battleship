@@ -4,8 +4,8 @@ require '..lib/battleship/ship'
 
 class BoardSpaceTest < Minitest::Test
   def setup
-    @board_space = BoardSpace.new
-    @ship = Ship.new
+    @board_space = Battleship::BoardSpace.new
+    @ship = Battleship::Ship.new
     @mock = MiniTest::Mock.new
   end
 
@@ -28,7 +28,7 @@ class BoardSpaceTest < Minitest::Test
   end
 
   def test_two_board_spaces_can_hold_the_same_ship
-    board_space2 = BoardSpace.new
+    board_space2 = Battleship::BoardSpace.new
     board_space2.place_ship(@ship)
     @board_space.place_ship(@ship)
     assert @board_space.ship.equal?(board_space2.ship)
