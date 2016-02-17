@@ -4,7 +4,8 @@ require_relative '../lib/battleship/board_space'
 
 class GameBoardTest < Minitest::Test
   def setup
-    @game_board = Battleship::GameBoard.new
+    @game_board  = Battleship::GameBoard.new
+    @test_helper = TestHelper.new
   end
 
   def test_it_has_a_game_board_array
@@ -20,49 +21,42 @@ class GameBoardTest < Minitest::Test
   end
 
   def test_it_can_place_a_size_two_ship
-    skip
-    @game_board.place_ship(2, "A1 A2")
+    @game_board.place_ship(2, @test_helper.size_two_ship)
     assert @game_board.board[0][0].has_ship?
     assert @game_board.board[1][0].has_ship?
   end
 
   def test_it_can_place_the_same_ship_in_two_places
-    skip
-    @game_board.place_ship(2, "A1 A2")
-    assert @game_board.board[0][0].equal?(@game_board.board[1][0])
+    @game_board.place_ship(2, @test_helper.size_two_ship)
+    assert @game_board.board[0][0].ship.equal?(@game_board.board[1][0].ship)
   end
 
   def test_it_can_place_a_size_three_ship
-    skip
-    @game_board.place_ship(3, "A1 A2 A3")
+    @game_board.place_ship(3, @test_helper.size_three_ship)
     assert @game_board.board[0][0].has_ship?
     assert @game_board.board[1][0].has_ship?
     assert @game_board.board[2][0].has_ship?
   end
 
   def test_it_can_place_the_same_ship_in_three_places
-    skip
-    @game_board.place_ship(3, "A1 A2 A3")
-    assert @game_board.board[0][0].equal?(@game_board.board[2][0])
-    assert @game_board.board[1][0].equal?(@game_board.board[0][0])
-    assert @game_board.board[2][0].equal?(@game_board.board[1][0])
+    @game_board.place_ship(3, @test_helper.size_three_ship)
+    assert @game_board.board[0][0].ship.equal?(@game_board.board[2][0].ship)
+    assert @game_board.board[1][0].ship.equal?(@game_board.board[0][0].ship)
+    assert @game_board.board[2][0].ship.equal?(@game_board.board[1][0].ship)
   end
 
   def test_a_fired_shot_will_return_miss_on_an_empty_square
-    skip
-    assert_equal :miss, @game_board.fire_shot("A1")
+    assert_equal :miss, @game_board.fire_shot([0,0])
   end
 
   def test_a_fired_shot_will_return_hit_on_a_square_with_a_ship_in_it
-    skip
-    @game_board.place_ship(2, "A1 A2")
-    assert_equal :hit, @game_board.fire_shot("A1")
+    @game_board.place_ship(2, @test_helper.size_two_ship)
+    assert_equal :hit, @game_board.fire_shot([0,0])
   end
 
   def test_a_fired_shot_will_return_sunk_if_it_sinks_a_ship
-    skip
-    @game_board.place_ship(2, "A1 A2")
-    @game_board.fire_shot("A2")
-    assert_equal :sunk, @game_board.fire_shot("A1")
+    @game_board.place_ship(2, @test_helper.size_two_ship)
+    @game_board.fire_shot([1,0])
+    assert_equal :sunk, @game_board.fire_shot([0,0])
   end
 end
