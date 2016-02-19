@@ -54,12 +54,12 @@ module Battleship
     end
 
     def convert_shot_coordinates(coordinates)
-      @hash_container.coordinates_hash[coordinates]
+      coordinates_hash[coordinates]
     end
 
     def convert_ship_coordinates(coordinates)
       coordinates.map do |element|
-        @hash_container.coordinates_hash[element]
+        coordinates_hash[element]
       end
     end
 
@@ -87,6 +87,10 @@ module Battleship
       else
         false
       end
+    end
+
+    def coordinates_hash
+      @hash_container.coordinates_hash
     end
 
     def print_invalid_coordinates

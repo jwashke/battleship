@@ -1,3 +1,5 @@
+require_relative 'hash_container'
+
 module Battleship
   class CPUInput
 

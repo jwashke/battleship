@@ -24,12 +24,14 @@ class PlayerTest < Minitest::Test
     assert_equal [0, 0], @player.convert_shot_coordinates("A1")
   end
 
-  def test_it_can_validate_ship_placement
-
-  end
-
   def test_it_can_split_and_convert_ship_placement_coordinates
     assert_equal @test_helper.size_two_ship, @player.split_and_convert_ship_coordinates("A1 A2")
   end
+end
 
+class Battleship::Player
+  public :split_and_convert_ship_coordinates,
+         :validate_coordinates,
+         :coordinates_hash,
+         :convert_shot_coordinates
 end
