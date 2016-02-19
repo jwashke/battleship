@@ -12,6 +12,10 @@ module Battleship
       @size_3_array     = @hash_container.ship_size_3_array
     end
 
+    def get_start_command
+      @player_input.get_input.downcase
+    end
+
     def place_ship(size)
       print_place_ship_message(size)
       @valid = false

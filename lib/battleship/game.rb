@@ -17,10 +17,28 @@ module Battleship
       @cpu_score    = 0
       @player_shots = 0
       @cpu_shots    = 0
-      main_game_loop
+      welcome
     end
 
     private
+
+    def welcome
+      loop do
+        @printer.print_welcome
+        input = @player.get_start_command
+        break if opening_menu(input) == 0
+      end
+    end
+
+    def opening_menu(input)
+      if input == 'i' || input == 'instructions'
+        @printer.print_instructions
+      elsif input == 'q' || input == 'quit'
+        0
+      elsif input == 'p' || input == 'play'
+        main_game_loop
+      end
+    end
 
     def main_game_loop
       game_setup

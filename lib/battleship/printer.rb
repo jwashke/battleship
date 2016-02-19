@@ -1,11 +1,18 @@
-require_relative 'game_board'
+require 'colorize'
 
 module Battleship
   class Printer
 
     def print_welcome
-      print "Welcome to BATTLESHIP\n\n
-      Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+      print "Welcome to BATTLESHIP
+      \n\nWould you like to (p)lay, read the (i)nstructions, or (q)uit?"
+    end
+
+    def print_instructions
+      print "\nIn Battleship you try to sink your opponents battleships.
+      \nFirt the computer will lay out his ships on the grid. Then you
+      \nwill lay out your ships on a grid. Then you will try to sink your
+      \nopponents battleship.\n\n"
     end
 
     def print_ship_placement
@@ -44,11 +51,11 @@ module Battleship
         array.each_with_index do |board_space, index|
           print "#{counter}  " if index == 0
           if board_space.has_hit?
-            print "H "
+            print "H ".colorize(:red)
           elsif board_space.has_ship? && print_ships
-            print "X "
+            print "X ".colorize(:green)
           elsif board_space.has_miss?
-            print "M "
+            print "M ".colorize(:white)
           else
             print "  "
           end
