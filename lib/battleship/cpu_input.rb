@@ -23,10 +23,12 @@ module Battleship
       convert_shot_coordinates(@shot_array.pop)
     end
 
+    private
+
     def place_size_2_ship
-      coordinate = @size_2_array.pop
-      remove_ship_spots_from_ship_3_array(coordinate)
-      convert_ship_coordinates(coordinate.split(" "))
+      coordinate = @size_2_array.pop.split(" ")
+      iterate_through_size_3_array_to_remove_ship(coordinate)
+      convert_ship_coordinates(coordinate)
     end
 
     def place_size_3_ship
@@ -43,18 +45,21 @@ module Battleship
       @hash_container.coordinates_hash[coordinates]
     end
 
-      def remove_ship_spots_from_ship_3_array(string)
-        strings = string.split(" ")
-        @size_3_array.delete_if do |coordinate|
-          coordinate = coordinate.split(" ")
-          if coordinate.include? strings[0]
-            true
-          elsif coordinate.include? strings[1]
-            true
-          else
-            false
-          end
-        end
+    def iterate_through_size_3_array_to_remove_ship(string)
+      @size_3_array.delete_if do |coordinate|
+        remove_ship_from_size_3_array(coordinate, string)
       end
+    end
+
+    def remove_ship_from_size_3_array(coordinate, string)
+      coordinate = coordinate.split(" ")
+      if coordinate.include? string[0]
+        true
+      elsif coordinate.include? string[1]
+        true
+      else
+        false
+      end
+    end
   end
 end

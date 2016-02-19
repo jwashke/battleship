@@ -20,6 +20,8 @@ module Battleship
       main_game_loop
     end
 
+    private
+
     def main_game_loop
       game_setup
       until @game_over
@@ -60,12 +62,15 @@ module Battleship
 
     def player_place_ships
       @printer.print_ship_placement
-      @printer.print_board(@cpu_board, true)
-      @cpu_board.place_ship(2, @player)
-      @printer.print_board(@cpu_board, true)
-      @cpu_board.place_ship(3, @player)
-      @printer.print_board(@cpu_board, true)
+      player_print_board_then_place_ship(2)
+      player_print_board_then_place_ship(3)
     end
+
+    def player_print_board_then_place_ship(size)
+      @printer.print_board(@cpu_board, true)
+      @cpu_board.place_ship(size, @player)
+    end
+
 
     def evaluate_cpu(results)
       @cpu_score += 1 if results == :sunk

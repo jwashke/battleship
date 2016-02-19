@@ -22,7 +22,7 @@ module Battleship
       result = fire_shot(player.get_shot_coordinates)
     end
 
-    #private
+    private
 
     def setup_game_board
       empty_board = create_empty_board

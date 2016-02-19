@@ -3,7 +3,7 @@ require_relative 'hash_container'
 
 module Battleship
   class Player
-    
+
     def initialize
       @player_input     = PlayerInput.new
       @valid            = false
@@ -13,15 +13,10 @@ module Battleship
     end
 
     def place_ship(size)
-      print_message(size)
+      print_place_ship_message(size)
       @valid = false
       until @valid
-        coordinates = @player_input.get_input
-        validate_ship_placement(coordinates, size)
-        unless @valid
-          print "\nPlease enter valid coordinates that
-          do not already contain a ship\n"
-        end
+        coordinates = enter_valid_ship_coordinates(size)
       end
       convert_ship_coordinates(coordinates.split(" "))
     end
@@ -36,6 +31,8 @@ module Battleship
       convert_shot_coordinates(coordinates)
     end
 
+    private
+
     def split_and_convert_ship_coordinates(coordinates)
       coordinate_array = coordinates.split
       convert_ship_coordinates(coordinate_array)
@@ -47,6 +44,13 @@ module Battleship
       else
         puts "please enter valid coordinates that you have not yet entered"
       end
+    end
+
+    def enter_valid_ship_coordinates(size)
+      print_invalid_coordinates
+      coordinates = @player_input.get_input
+      validate_ship_placement(coordinates, size)
+      coordinates
     end
 
     def convert_shot_coordinates(coordinates)
@@ -62,27 +66,35 @@ module Battleship
     def validate_ship_placement(coordinates, size)
       if size == 2
         @valid = @hash_container.ship_size_2_array.include?(coordinates)
-        remove_ship_spots_from_ship_3_array(coordinates) if @valid
+        iterate_through_size_3_array_to_remove_ship(coordinates) if @valid
       else
         @valid = @size_3_array.include?(coordinates)
       end
     end
 
-    def remove_ship_spots_from_ship_3_array(string)
-      strings = string.split(" ")
+    def iterate_through_size_3_array_to_remove_ship(coordinates)
       @size_3_array.delete_if do |coordinate|
-        coordinate = coordinate.split(" ")
-        if coordinate.include? strings[0]
-          true
-        elsif coordinate.include? strings[1]
-          true
-        else
-          false
-        end
+        remove_ship_from_size_3_array(coordinate, coordinates)
       end
     end
 
-    def print_message(size)
+    def remove_ship_from_size_3_array(coordinate, coordinates)
+      coordinate = coordinate.split(" ")
+      if coordinate.include? coordinates[0]
+        true
+      elsif coordinate.include? coordinates[1]
+        true
+      else
+        false
+      end
+    end
+
+    def print_invalid_coordinates
+      print "\nPlease enter valid coordinates that
+    do not already contain a ship\n"
+    end
+
+    def print_place_ship_message(size)
       print "\n\nEnter the squares for the #{size} unit ship:"
     end
   end

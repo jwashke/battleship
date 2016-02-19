@@ -1,5 +1,4 @@
 require_relative 'game_board'
-require 'pry'
 
 module Battleship
   class Printer
@@ -23,7 +22,6 @@ module Battleship
     end
 
     def print_player_results(result, board)
-      #binding.pry
       case result
       when :hit
         print "\nYou hit an enemy ship!\n"
