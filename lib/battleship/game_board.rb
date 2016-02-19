@@ -1,6 +1,5 @@
 require_relative 'board_space'
 require_relative 'ship.rb'
-require 'pry'
 
 module Battleship
   class GameBoard
@@ -48,7 +47,6 @@ module Battleship
     end
 
     def fire_shot(coordinate)
-      #binding.pry
       @board[coordinate.first][coordinate.last].check_hit
     end
 

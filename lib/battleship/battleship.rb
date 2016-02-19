@@ -1,4 +1,5 @@
 require_relative 'game'
+
 module Battleship
   class Battleship
     def initialize
