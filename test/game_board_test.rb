@@ -28,26 +28,26 @@ class GameBoardTest < Minitest::Test
   def test_it_can_place_a_size_two_ship
     @game_board.place_ship(2, @test_helper.size_two_ship)
     assert @game_board.board[0][0].has_ship?
-    assert @game_board.board[1][0].has_ship?
+    assert @game_board.board[0][1].has_ship?
   end
 
   def test_it_can_place_the_same_ship_in_two_places
     @game_board.place_ship(2, @test_helper.size_two_ship)
-    assert @game_board.board[0][0].ship.equal?(@game_board.board[1][0].ship)
+    assert @game_board.board[0][0].ship.equal?(@game_board.board[0][1].ship)
   end
 
   def test_it_can_place_a_size_three_ship
     @game_board.place_ship(3, @test_helper.size_three_ship)
     assert @game_board.board[0][0].has_ship?
-    assert @game_board.board[1][0].has_ship?
-    assert @game_board.board[2][0].has_ship?
+    assert @game_board.board[0][1].has_ship?
+    assert @game_board.board[0][2].has_ship?
   end
 
   def test_it_can_place_the_same_ship_in_three_places
     @game_board.place_ship(3, @test_helper.size_three_ship)
-    assert @game_board.board[0][0].ship.equal?(@game_board.board[2][0].ship)
-    assert @game_board.board[1][0].ship.equal?(@game_board.board[0][0].ship)
-    assert @game_board.board[2][0].ship.equal?(@game_board.board[1][0].ship)
+    assert @game_board.board[0][0].ship.equal?(@game_board.board[0][1].ship)
+    assert @game_board.board[0][1].ship.equal?(@game_board.board[0][2].ship)
+    assert @game_board.board[0][2].ship.equal?(@game_board.board[0][0].ship)
   end
 
   def test_a_fired_shot_will_return_miss_on_an_empty_square
@@ -61,7 +61,7 @@ class GameBoardTest < Minitest::Test
 
   def test_a_fired_shot_will_return_sunk_if_it_sinks_a_ship
     @game_board.place_ship(2, @test_helper.size_two_ship)
-    @game_board.fire_shot([1,0])
+    @game_board.fire_shot([0,1])
     assert_equal :sunk, @game_board.fire_shot([0,0])
   end
 end
