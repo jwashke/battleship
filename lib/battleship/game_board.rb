@@ -5,8 +5,10 @@ module Battleship
   class GameBoard
     attr_reader :board
 
-    def initialize
-      @board = setup_game_board
+    def initialize(player)
+      @player     = player
+      @board      = setup_game_board
+      @ships_sunk = 0
     end
 
     def place_ship(ship_size, coordinates)
@@ -16,11 +18,12 @@ module Battleship
       end
     end
 
-    def fire_shot(coordinate)
-      @board[coordinate.first][coordinate.last].check_hit
+    def get_shot_coordinates
+      result = fire_shot(@player.get_coordinate)
+      evaluate(result)
     end
 
-    private
+    #private
 
     def setup_game_board
       empty_board = create_empty_board
@@ -42,6 +45,10 @@ module Battleship
 
     def place_ship_in_board_space(coordinate, ship)
       @board[coordinate.first][coordinate.last].place_ship(ship)
+    end
+
+    def fire_shot(coordinate)
+      @board[coordinate.first][coordinate.last].check_hit
     end
 
   end

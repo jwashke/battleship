@@ -5,7 +5,7 @@ module Battleship
     def initialize
       @ship = nil
       @miss = false
-      @hit = false
+      @hit  = false
     end
 
     def has_miss?
@@ -21,19 +21,11 @@ module Battleship
     end
 
     def check_hit
-      if has_ship?
-        hit
-      else
-        miss
-      end
+      has_ship? ? hit : miss
     end
 
     def has_ship?
-      if @ship == nil
-        false
-      else
-        true
-      end
+      @ship.instance_of? Ship
     end
 
     private

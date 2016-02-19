@@ -6,15 +6,11 @@ module Battleship
 
     def initialize(health)
       @health = health
-      @hits = 0
+      @hits   = 0
     end
 
     def sunk?
-      if @hits >= @health
-        true
-      else
-        false
-      end
+      @hits >= @health
     end
 
     def get_hit
@@ -25,11 +21,7 @@ module Battleship
     private
 
     def check_sunk_or_hit
-      if sunk?
-        :sunk
-      else
-        :hit
-      end
+      sunk? ? :sunk : :hit
     end
   end
 end

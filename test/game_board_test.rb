@@ -1,11 +1,16 @@
 require_relative 'test_helper'
 require_relative '../lib/battleship/game_board'
 require_relative '../lib/battleship/board_space'
+require_relative '../lib/battleship/player'
 
 class GameBoardTest < Minitest::Test
   def setup
-    @game_board  = Battleship::GameBoard.new
+    @game_board  = Battleship::GameBoard.new(Battleship::Player.new)
     @test_helper = TestHelper.new
+  end
+
+  def test_it_has_a_player_object
+
   end
 
   def test_it_has_a_game_board_array
