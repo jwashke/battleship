@@ -1,15 +1,22 @@
 require_relative 'game_board'
-require_relative 'player_input'
+require_relative 'player'
 require_relative 'cpu_input'
 require_relative 'printer'
+require 'pry'
 
 module Battleship
   class Game
     def initialize
       @game_over    = true
       @printer      = Printer.new
-      @player_board = GameBoard.new(Player.new)
-      @cpu_board    = GameBoard.new(CPUPlayer.new)
+      @player_board = GameBoard.new
+      @cpu_board    = GameBoard.new
+      @player       = Player.new
+      @cpu          = CPUInput.new
+      @player_score = 0
+      @cpu_score    = 0
+      @player_shots = 0
+      @cpu_shots    = 0
       main_game_loop
     end
 
@@ -22,24 +29,56 @@ module Battleship
     end
 
     def game_setup
+      @time_start = Time.now
       computer_place_ships
       player_place_ships
       @game_over = false
     end
 
     def game_turn
-      results = @player_board.get_shot_coordinates
-      evaluate(results)
-      results = @cpu_board.get_shot_coordinates
-      evaluate(results)
+      results = @cpu_board.get_shot_coordinates(@cpu)
+      evaluate_cpu(results)
+      @printer.print_shot
+      results = @player_board.get_shot_coordinates(@player)
+      evaluate_player(results)
     end
 
     def game_end
-      printer.print_game_end
+      player = :cpu
+      shots = @cpu_shots
+      if @player_score >= 2
+        player = :player
+        shots = @player_shots
+      end
+      @printer.print_game_end(player, shots, Time.now - @time_start)
     end
 
-    def evaluate
+    def computer_place_ships
+      @player_board.place_ship(2, @cpu)
+      @player_board.place_ship(3, @cpu)
+    end
 
+    def player_place_ships
+      @printer.print_ship_placement
+      @printer.print_board(@cpu_board, true)
+      @cpu_board.place_ship(2, @player)
+      @printer.print_board(@cpu_board, true)
+      @cpu_board.place_ship(3, @player)
+      @printer.print_board(@cpu_board, true)
+    end
+
+    def evaluate_cpu(results)
+      @cpu_score += 1 if results == :sunk
+      @printer.print_cpu_results(results, @cpu_board)
+      @game_over = true if @cpu_score >= 2
+      @cpu_shots += 1
+    end
+
+    def evaluate_player(results)
+      @player_score += 1 if results == :sunk
+      @printer.print_player_results(results, @player_board)
+      @game_over = true if @player_score >= 2
+      @player_shots += 1
     end
   end
 end

@@ -1,26 +1,26 @@
 require_relative 'board_space'
 require_relative 'ship.rb'
+require 'pry'
 
 module Battleship
   class GameBoard
     attr_reader :board
 
-    def initialize(player)
-      @player     = player
+    def initialize
       @board      = setup_game_board
       @ships_sunk = 0
     end
 
-    def place_ship(ship_size, coordinates)
-      ship = Battleship::Ship.new(ship_size)
+    def place_ship(size, player)
+      coordinates = player.place_ship(size)
+      ship = Ship.new(size)
       coordinates.each do |coordinate|
         place_ship_in_board_space(coordinate, ship)
       end
     end
 
-    def get_shot_coordinates
-      result = fire_shot(@player.get_coordinate)
-      evaluate(result)
+    def get_shot_coordinates(player)
+      result = fire_shot(player.get_shot_coordinates)
     end
 
     #private
@@ -48,6 +48,7 @@ module Battleship
     end
 
     def fire_shot(coordinate)
+      #binding.pry
       @board[coordinate.first][coordinate.last].check_hit
     end
 
